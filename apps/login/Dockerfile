@@ -14,9 +14,14 @@ COPY packages/zitadel-proto/package.json packages/zitadel-proto/
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 
-# Copy source code
+# Copy source code (including proto definitions for code generation)
+COPY proto/ proto/
 COPY packages/ packages/
 COPY apps/login/ apps/login/
+
+# Build workspace packages (proto must be built before client)
+RUN cd packages/zitadel-proto && pnpm run generate
+RUN cd packages/zitadel-client && pnpm run build
 
 # Build the login app
 WORKDIR /app/apps/login
