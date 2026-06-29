@@ -4,6 +4,10 @@ if [ -f /.env-file/.env ]; then
     set -o allexport
     . /.env-file/.env
     set +o allexport
+elif [ -f ./.env ]; then
+    set -o allexport
+    . ./.env
+    set +o allexport
 fi
 
 if [ -n "${ZITADEL_SERVICE_USER_TOKEN_FILE}" ]; then
